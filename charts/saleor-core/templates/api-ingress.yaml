@@ -14,7 +14,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-  - host: saleor-k8s-{{.Values.environment}}-saleor-core-api.hack.cloudnative.nttdatauk.cloud
+  - host: saleor-k8s-{{.Values.environment}}-saleor-core-api.dea.cloudnative.nttdatauk.cloud
     http:
       paths:
       - backend:
