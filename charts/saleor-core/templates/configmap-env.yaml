@@ -30,7 +30,6 @@ metadata:
 data:
 
   ## Django Configuration parameters
-
   DJANGO_SETTINGS_MODULE: {{ .Values.settingsModule | quote }}
   DEBUG: {{ .Values.debugMode | toString | title | quote }}
   INTERNAL_IPS: {{  .Values.internalIps | join "," | quote }}
@@ -49,11 +48,11 @@ data:
   MEDIA_URL: {{ .Values.mediaUrl | quote }}
   ENABLE_SILK: {{ .Values.enableSilk | toString | title | quote }}
 {{- if and .Values.allowedHosts.includeIngressHosts .Values.ingress.enabled }}
-  ALLOWED_HOSTS: {{ $all_hosts }}
+  ALLOWED_HOSTS: "*"
 {{- else if not (empty .Values.allowedHosts.hosts) }}
-  ALLOWED_HOSTS: {{ .Values.allowedHosts.hosts | join "," | trimAll "," }}
+  ALLOWED_HOSTS: "*"
 {{- else }}
-  ALLOWED_HOSTS:
+  ALLOWED_HOSTS: "*"
 {{- end }}
   CREATE_IMAGES_ON_DEMAND: {{ .Values.images.createOnDemand | toString | title | quote }}
   ENABLE_DEBUG_TOOLBAR: {{ .Values.enableDjangoDebugToolbar | toString | title | quote }}
@@ -66,11 +65,11 @@ data:
   DEFAULT_CURRENCY: {{ .Values.defaultCurrency | quote }}
   GOOGLE_ANALYTICS_TRACKING_ID: {{ .Values.googleAnalyticsTrackingId | default "" | quote  }}
 {{- if and .Values.allowedHosts.includeIngressHosts .Values.ingress.enabled }}
-  ALLOWED_CLIENT_HOSTS: {{ $all_hosts_client }}
+  ALLOWED_CLIENT_HOSTS: "v*"
 {{- else if not (empty .Values.allowedHosts.hosts) }}
-  ALLOWED_CLIENT_HOSTS: {{ .Values.allowedHosts.hosts | join "," | trimAll "," }}
+  ALLOWED_CLIENT_HOSTS: "*"
 {{- else }}
-  ALLOWED_CLIENT_HOSTS:
+  ALLOWED_CLIENT_HOSTS: "*"
 {{- end }}
   ALLOWED_GRAPHQL_ORIGINS: {{ .Values.allowedGraphqlOrigins | quote }}
   MAX_CHECKOUT_LINE_QUANTITY: {{ .Values.maxCheckoutLineQuantity | toString | quote }}
@@ -128,7 +127,7 @@ data:
 
 
   ### Google Recaptcha
-  RECAPTCHA_PUBLIC_KEY: {{ .Values.externalServices.googleRecaptcha.publicKey | quote }}
+  RECAPTCHA_PUBLIC_KEY: "6LdRhegeAAAAAISq97DMU3hljKF7UluW6L8ODfoD"
 
 
   ### S3 Cloud Storage

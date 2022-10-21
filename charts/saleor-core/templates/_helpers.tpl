@@ -104,6 +104,14 @@ envFrom:
       name: {{ .Values.existingSecret }}
     {{- end }}
 env:
+{{- if eq .Values.environment "1" }}
+  - name: JAEGER_AGENT_HOST
+    value: 'jeager-aio-agent.observability'
+  - name: JAEGER_AGENT_PORT
+    value: '6831'
+  - name: JAEGER_LOGGING
+    value: 'True'
+{{- end }}
 {{- if .Values.existingSecret }}
   - name: SECRET_KEY
     value: "$(SALEOR_SECRET_KEY)"

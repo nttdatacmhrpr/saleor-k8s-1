@@ -7,12 +7,15 @@ metadata:
     {{- include "saleor-dashboard.labels" . | nindent 4 }}
 data:
   nginx.conf: |
+    daemon off;
+    
     worker_processes  {{ .Values.nginxConfig.workerProcesses }};
     pid /tmp/nginx.pid;
     events {
       worker_connections  {{ .Values.nginxConfig.workerConnections }};
     }
     http {
+      server_names_hash_bucket_size  128;
       proxy_temp_path /tmp/proxy_temp;
       client_body_temp_path /tmp/client_temp;
       fastcgi_temp_path /tmp/fastcgi_temp;
@@ -86,21 +89,19 @@ data:
           location /dashboard/ {
             alias /app/;
             try_files $uri $uri/ /index.html;
-           }
+          }
       }
 
-    {{- range .Values.ingress.hosts }}
       server {
         listen      {{ $port }};
-        server_name {{ .host }};
+        server_name saleor-k8s-{{.Values.environment}}-saleor-dashboard.hack.cloudnative.nttdatauk.cloud;
         add_header Cache-Control public;
 
-        location / {
+        location /dashboard/ {
             alias /app/;
             try_files $uri $uri/ /index.html;
         }
       }
-    {{- end }}
     }
 
   substitute_env_vars.sh: |
